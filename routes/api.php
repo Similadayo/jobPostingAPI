@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\JobController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -22,11 +23,17 @@ Route::get('/jobs', function(){
     return 'jobs';
 });
 
+
+
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
 
     Route::post('/logout', [UserController::class, 'logout']);
+
+    Route::post('/jobs', [JobController::class, 'create']);
+    // Route::put('/jobs/{id}', [JobController::class, 'update']);
+    // Route::delete('/jobs/{id}', [JobController::class, 'destroy']);
 });
 
