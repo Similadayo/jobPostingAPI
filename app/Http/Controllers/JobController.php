@@ -7,6 +7,22 @@ use Illuminate\Http\Request;
 
 class JobController extends Controller
 {
+
+    public function index()
+    {
+        $jobs = Jobs::all();
+
+        return response()->json(['data' => $jobs]);
+    }
+
+    // Get a specific job posting by ID
+    public function show($id)
+    {
+        $job = Jobs::findOrFail($id);
+
+        return response()->json(['data' => $job]);
+    }
+
     public function create(Request $request)
     {
         $request->validate([
@@ -65,6 +81,17 @@ class JobController extends Controller
         return response()->json([
             'message' => 'Job updated successfully',
             'data' => $job,
+        ], 200);
+    }
+
+    public function delete($id)
+    {
+        $job = Jobs::where('id', $id)->where('user_id', auth()->id())->firstOrFail();
+
+        $job->delete();
+
+        return response()->json([
+            'message' => 'Job deleted successfully',
         ], 200);
     }
 }
