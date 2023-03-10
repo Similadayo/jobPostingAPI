@@ -33,7 +33,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [UserController::class, 'logout']);
 
     Route::post('/jobs', [JobController::class, 'create']);
-    // Route::put('/jobs/{id}', [JobController::class, 'update']);
+    Route::put('/jobs/{id}', [JobController::class, 'update']);
     // Route::delete('/jobs/{id}', [JobController::class, 'destroy']);
 });
 

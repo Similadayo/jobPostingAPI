@@ -51,7 +51,7 @@ class UserController extends Controller
 
         $user = User::where('email', $request->email)->first();
 
-        $token = $user->createToken('auth-token', ['*']);
+        $token = $user->createToken('api-token');
 
         return response()->json([
             'message' => 'Login successful',
