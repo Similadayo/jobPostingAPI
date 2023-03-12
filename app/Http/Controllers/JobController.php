@@ -15,7 +15,6 @@ class JobController extends Controller
         return response()->json(['data' => $jobs]);
     }
 
-    // Get a specific job posting by ID
     public function show($id)
     {
         $job = Jobs::findOrFail($id);
@@ -94,4 +93,54 @@ class JobController extends Controller
             'message' => 'Job deleted successfully',
         ], 200);
     }
+
+    public function search(Request $request)
+    {
+        $jobs = Jobs::query();
+
+        if ($request->has('title')) {
+            $jobs->where('title', 'like', '%' . $request->title . '%');
+        }
+
+        if ($request->has('location')) {
+            $jobs->where('location', 'like', '%' . $request->location . '%');
+        }
+
+        if ($request->has('company')) {
+            $jobs->where('company', 'like', '%' . $request->company . '%');
+        }
+
+        $jobs = $jobs->get();
+
+        return response()->json([
+            'jobs' => $jobs
+        ]);
+    }
+
+    public function filterJobs(Request $request)
+    {
+        $query = Jobs::where('is_active', true);
+    
+        if ($request->has('category')) {
+            $query->where('category', $request->category);
+        }
+    
+        if ($request->has('type')) {
+            $query->where('type', $request->type);
+        }
+    
+        if ($request->has('salary')) {
+            $salary = $request->salary;
+            $query->where(function ($q) use ($salary) {
+                $q->where('salary', '>=', $salary)
+                    ->orWhereNull('salary');
+            });
+        }
+    
+        $jobs = $query->get();
+    
+        return response()->json($jobs);
+    }
+    
+    
 }

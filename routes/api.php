@@ -38,5 +38,9 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 Route::get('/jobs', [JobController::class, 'index']);
+Route::get('/jobs', [JobController::class, 'search']);
 Route::get('/jobs/{id}', [JobController::class, 'show']);
+Route::get('/jobs/filter', [JobController::class, 'filterJobs']);
+
+
 
